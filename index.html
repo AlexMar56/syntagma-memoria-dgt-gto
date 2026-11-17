@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntagma · Memoria Ejecutiva & Cotizaciones (Renta y Venta) · Sistema DGT Guanajuato</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --syn-bg: #070d19;
+            --syn-card: #0f172a;
+            --syn-card-alt: #131f38;
+            --syn-border: rgba(148, 163, 184, 0.18);
+            --syn-emerald: #10b981;
+            --syn-blue: #3b82f6;
+            --syn-amber: #f59e0b;
+            --syn-purple: #a855f7;
+            --syn-text: #f8fafc;
+            --syn-muted: #94a3b8;
+        }
+        body {
+            background: radial-gradient(circle at top right, #112240 0%, var(--syn-bg) 60%);
+            color: var(--syn-text);
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+        }
+        .syn-navbar {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--syn-border);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+        .syn-card {
+            background: var(--syn-card);
+            border: 1px solid var(--syn-border);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        }
+        .syn-card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--syn-border);
+            background: rgba(255, 255, 255, 0.02);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+        .syn-kpi {
+            background: linear-gradient(145deg, #0f172a, #172554);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 14px;
+            padding: 1.25rem;
+        }
+        .nav-pills .nav-link {
+            color: var(--syn-muted);
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.65rem 1.15rem;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-pills .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #2563eb, #059669);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        }
+        .mono {
+            font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+        }
+        .badge-soft-emerald {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+        .badge-soft-blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.35);
+        }
+        .badge-soft-amber {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+        .badge-soft-purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.35);
+        }
+        .table-syn {
+            --bs-table-bg: transparent;
+            --bs-table-color: #e2e8f0;
+            --bs-table-border-color: rgba(148, 163, 184, 0.15);
+        }
+        .table-syn thead th {
+            background: rgba(15, 23, 42, 0.9);
+            color: #94a3b8;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 0.9rem 1rem;
+        }
+        .table-syn tbody td {
+            padding: 0.9rem 1rem;
+            vertical-align: middle;
+        }
+        .pdf-viewer-frame {
+            width: 100%;
+            height: 680px;
+            border: 1px solid var(--syn-border);
+            border-radius: 12px;
+            background: #1e293b;
+        }
+        .module-box {
+            background: rgba(30, 41, 59, 0.55);
+            border: 1px solid var(--syn-border);
+            border-radius: 12px;
+            padding: 1.15rem;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra Superior Fija -->
+<header class="syn-navbar py-3">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="rounded-3 d-flex align-items-center justify-content-center fw-bold text-white"
+                     style="width:44px;height:44px;background:linear-gradient(135deg,#10b981,#2563eb);font-size:1.25rem;">
+                    <i class="bi bi-layers-half"></i>
+                </div>
+                <div>
+                    <div class="small fw-bold text-info text-uppercase" style="letter-spacing:0.08em;font-size:0.72rem;">
+                        SYNTAGMA · SOLUCIONES DE SOFTWARE EMPRESARIAL · LÍDER DE PROYECTO: JOSÉ ALEJANDRO MÁRQUEZ AVIÑA
+                    </div>
+                    <h5 class="mb-0 fw-bold text-white">
+                        Memoria Ejecutiva Integral & Cotizaciones · Sistema Flota y Permisos DGT Guanajuato
+                    </h5>
+                </div>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="Propuesta_Renta_Syntagma_DGT_Guanajuato.pdf" download class="btn btn-success btn-sm fw-bold px-3 py-2 rounded-3">
+                    <i class="bi bi-file-earmark-pdf-fill me-1"></i>Descargar Cotización RENTA (.PDF)
+                </a>
+                <a href="Propuesta_Venta_Definitiva_Syntagma_DGT_Guanajuato.pdf" download class="btn btn-warning text-dark btn-sm fw-bold px-3 py-2 rounded-3">
+                    <i class="bi bi-file-earmark-pdf-fill me-1"></i>Descargar Cotización VENTA (.PDF)
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container py-4">
+
+    <!-- Tarjetas Resumen Ejecutivo -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="syn-kpi h-100">
+                <div class="small text-info fw-bold text-uppercase mb-1">Opción 1: Renta Mensual (SaaS)</div>
+                <div class="h3 fw-bold text-white mb-1">$19,500 <span class="fs-6 fw-normal text-secondary">+ IVA/mes</span></div>
+                <div class="small text-secondary">
+                    Plan Base (1 a 400 unidades) · Escalonable a 1,000+ u.<br>
+                    <strong class="text-warning">Implementación: $34,000 + IVA</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="syn-kpi h-100" style="border-color: rgba(16,185,129,0.35);">
+                <div class="small text-success fw-bold text-uppercase mb-1">Utilidad Libre Syntagma (RESICO)</div>
+                <div class="h3 fw-bold text-success mb-1">~$18,865 <span class="fs-6 fw-normal text-secondary">libres/mes</span></div>
+                <div class="small text-secondary">
+                    En tramo base (400 u) descontando ISR 1.25% ($243.75), Hostinger Business y Gemini API.
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="syn-kpi h-100" style="border-color: rgba(245,158,11,0.35);">
+                <div class="small text-warning fw-bold text-uppercase mb-1">Opción 2: Venta Definitiva</div>
+                <div class="h3 fw-bold text-white mb-1">$280,000 <span class="fs-6 fw-normal text-secondary">+ IVA</span></div>
+                <div class="small text-secondary">
+                    Pago único (40% / 30% / 30%) · Incluye 2 meses soporte gratis.<br>
+                    <strong class="text-info">Póliza Anual Opc.: $7,000 + IVA/mes</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="syn-kpi h-100" style="border-color: rgba(168,85,247,0.35);">
+                <div class="small text-light fw-bold text-uppercase mb-1">Alcance DGT Guanajuato</div>
+                <div class="h3 fw-bold text-white mb-1">9 Oficinas · 3 Mod.</div>
+                <div class="small text-secondary">
+                    Nomenclatura <code class="text-warning">PLE-0150-P</code> · Personal (P), Escolar (E) y Accesorio (A) · Multi-Planta.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación por Pestañas de la Memoria -->
+    <ul class="nav nav-pills gap-2 mb-4 p-2 syn-card" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabMemoriaModulos" type="button">
+                <i class="bi bi-cpu-fill me-2"></i>1. Memoria Completa de Módulos y Reglas DGT
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabCotizacionRenta" type="button">
+                <i class="bi bi-graph-up-arrow me-2"></i>2. Cotización RENTA (1 a 1,000 u) + Simulador RESICO
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabCotizacionVenta" type="button">
+                <i class="bi bi-award-fill me-2"></i>3. Cotización VENTA Definitiva + Póliza Anual
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabArquitecturaManuales" type="button">
+                <i class="bi bi-database-fill-gear me-2"></i>4. Arquitectura BD (16 Tablas), Hostinger y Manuales PDF
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- ======================================================================= -->
+        <!-- PESTAÑA 1: MEMORIA COMPLETA DE MÓDULOS Y REGLAS DE NEGOCIO DGT          -->
+        <!-- ======================================================================= -->
+        <div class="tab-pane fade show active" id="tabMemoriaModulos">
+            <div class="syn-card mb-4">
+                <div class="syn-card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h5 class="mb-1 fw-bold text-white">
+                            <i class="bi bi-journal-code text-info me-2"></i>Memoria Descriptiva de Todo lo que Incluye el Sistema
+                        </h5>
+                        <p class="mb-0 small text-secondary">
+                            Resumen técnico, operativo y normativo diseñado para consultar desde cualquier dispositivo sin exponer código fuente.
+                        </p>
+                    </div>
+                    <span class="badge badge-soft-emerald px-3 py-2">100% Desarrollado y Auditado</span>
+                </div>
+                <div class="p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-info mb-0">1. Bóveda de Representatividad por Razón Social (Cero Duplicidad)</h6>
+                                    <span class="badge badge-soft-blue">6 Docs Corporativos</span>
+                                </div>
+                                <p class="small text-secondary mb-2">
+                                    La empresa opera con múltiples Razones Sociales. Dado que la representatividad legal no cambia entre vehículos de una misma empresa, se carga <strong>una sola vez por Razón Social</strong>:
+                                </p>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li><code>01_Acta_Constitutiva.pdf</code> y <code>02_Acta_Asamblea.pdf</code></li>
+                                    <li><code>03_Poder_Notarial.pdf</code> y <code>04_Registro_Publico_Poder_RPP.pdf</code></li>
+                                    <li><code>05_Constancia_Situacion_Fiscal_CSF.pdf</code> y <code>06_INE_Representante_Legal.pdf</code></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-success mb-0">2. Generador de Expedientes DGT en Carpetas (.ZIP) + Auditor</h6>
+                                    <span class="badge badge-soft-emerald">13 Docs Ordenados</span>
+                                </div>
+                                <p class="small text-secondary mb-2">
+                                    Botón inteligente <strong>Descargar Expediente ZIP</strong> por unidad, por lote seleccionado o por Planta Industrial completa:
+                                </p>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li>Combina automáticamente los <strong>6 PDFs de la Razón Social + 7 PDFs técnicos de la unidad</strong> (Factura/Carta Factura, Tarjeta de Circulación, Póliza/Inciso, Verificación Físico-Mecánica, Verificación Ambiental, Contrato de Servicio y Permiso Vigente).</li>
+                                    <li>Si falta algún documento o está vencido, advierte en pantalla y genera dentro de la carpeta el archivo <code>00_ADVERTENCIA_DOCUMENTOS_FALTANTES_DGT.pdf</code>.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-warning mb-0">3. Control Interestatal y Vida Útil: ¿Reemplazo o Permiso Nuevo?</h6>
+                                    <span class="badge badge-soft-amber">Protección de Permisos</span>
+                                </div>
+                                <p class="small text-secondary mb-2">
+                                    Resuelve el problema crítico cuando una unidad con permiso vigente en Guanajuato sale a otro estado o vence por año-modelo:
+                                </p>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li>La unidad saliente pasa a <strong>Baja por Traslado Foráneo</strong> o <strong>Baja por Vida Útil</strong> (permanece en Archivo Histórico de solo consulta y <strong>NO consume cupo activo en la renta mensual</strong>).</li>
+                                    <li>El permiso vigente queda reservado como <strong>Vacante</strong> para esa misma Razón Social.</li>
+                                    <li>Al capturar una unidad recién llegada, el sistema detecta si esa Razón Social tiene permiso vacante para insertarla como <strong>Reemplazo de Unidad</strong> o clasificarla como <strong>Permiso Especial Nuevo</strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-white mb-0">4. Constructor Oficial de Número Económico DGT (9 Oficinas · 3 Modalidades)</h6>
+                                    <span class="badge badge-soft-purple">PLE-0150-P</span>
+                                </div>
+                                <p class="small text-secondary mb-2">
+                                    La DGT asigna el identificador según la oficina regional emisora, el consecutivo a 4 dígitos y la modalidad:
+                                </p>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li><strong>9 Oficinas DGT Guanajuato:</strong> León (<code>PLE</code>), Guanajuato (<code>PGU</code>), Silao (<code>PSI</code>), San Miguel de Allende (<code>PSM</code>), San Luis de la Paz (<code>PSL</code>), Moroleón (<code>PMO</code>), Celaya (<code>PCE</code>), Irapuato (<code>PIR</code>) y Salamanca (<code>PSA</code>).</li>
+                                    <li><strong>Consecutivo Automático:</strong> El capturista solo escribe <code>150</code> y el sistema rellena <code>0150</code>.</li>
+                                    <li><strong>3 Modalidades Oficiales:</strong> Personal (<code>-P</code>), Escolar (<code>-E</code>) y Accesorio (<code>-A</code>).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-info mb-0">5. Inteligencia Artificial (Google Gemini API + OCR + Validación VIN)</h6>
+                                    <span class="badge badge-soft-blue">IA + NHTSA vPIC</span>
+                                </div>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li><strong>Autocompletado por Número de Serie (VIN):</strong> Con escribir los 17 caracteres del VIN, rellena Marca, Línea, Modelo, Tipo (Van/Camión), Capacidad, Número de Motor y evalúa la Vida Útil DGT.</li>
+                                    <li><strong>Escáner OCR con IA de Tarjetas de Circulación y Facturas:</strong> Extrae datos desde PDF o fotografía.</li>
+                                    <li><strong>Extractor IA de Pólizas e Incisos:</strong> Lee el anexo de la aseguradora (Flotilla, Individual o Carta Cobertura) e inserta el Folio de Póliza y el Inciso exacto en cada vehículo.</li>
+                                    <li><strong>Copiloto IA DGT Conversacional:</strong> Asistente flotante en pantalla para consultas rápidas de la flota.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-success mb-0">6. Módulo de Clientes / Plantas Industriales Asignadas</h6>
+                                    <span class="badge badge-soft-emerald">Auditorías en 1 Clic</span>
+                                </div>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li>Catálogo de plantas industriales contratantes (ej. <em>Mazda Salamanca, General Motors Silao, Pirelli Puerto Interior, Toyota Apaseo, Honda Celaya</em>).</li>
+                                    <li>Permite asignar una unidad a un cliente principal y a plantas/turnos adicionales.</li>
+                                    <li>En la columna opcional <code>Cliente_Planta</code> del Excel, si la planta existe la vincula y si no existe la crea automáticamente sin duplicar.</li>
+                                    <li>Botones por planta: <strong>Descargar Expedientes de la Planta (.ZIP)</strong> y <strong>Exportar Padrón del Cliente (.XLSX)</strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-warning mb-0">7. Carga Masiva Excel, Reportes Ejecutivos (.XLSX) y Choferes</h6>
+                                    <span class="badge badge-soft-amber">400 a 1,000+ Unidades</span>
+                                </div>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li>Importación masiva en Excel (<code>.xlsx</code> / <code>.csv</code>) o pegado directo de celdas.</li>
+                                    <li>Exportación nativa en Excel filtrable por Número Económico, Oficina DGT, Razón Social, Planta Asignada, Marca, Línea, Modelo, Serie, Motor y Póliza/Inciso.</li>
+                                    <li>Reporte ejecutivo de <strong>Qué Chofer está en Cuál Unidad</strong> con vigencia de licencia estatal y tarjetón DGT.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="module-box">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-white mb-0">8. Envío 1-Clic por Correo, Ciberseguridad y Respaldos Maestros</h6>
+                                    <span class="badge badge-soft-purple">WAF + reCAPTCHA v3</span>
+                                </div>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li><strong>Botón 1-Clic:</strong> Envía el reporte Excel de vehículos con permiso vencido o por vencer a los correos configurados en la pestaña de Configuración.</li>
+                                    <li><strong>Login Blindado:</strong> Ingreso exclusivo por <code>User Login</code> (no correo), protegido con Google reCAPTCHA Invisible v3, WAF, SIEM y 2 perfiles (<code>admin</code> y <code>captura</code>).</li>
+                                    <li><strong>Respaldo Maestro 1-Clic:</strong> Descarga inmediata de paquete <code>.ZIP</code> con el volcado íntegro de la Base de Datos MySQL (<code>.sql</code>) + toda la Bóveda Documental.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================= -->
+        <!-- PESTAÑA 2: COTIZACIÓN RENTA ESCALONADA + SIMULADOR FINANCIERO RESICO    -->
+        <!-- ======================================================================= -->
+        <div class="tab-pane fade" id="tabCotizacionRenta">
+            <div class="row g-4 mb-4">
+                <!-- Columna Izquierda: Tabla de Precios y Políticas de Renta -->
+                <div class="col-lg-7">
+                    <div class="syn-card h-100">
+                        <div class="syn-card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <h5 class="mb-1 fw-bold text-white">
+                                    <i class="bi bi-file-earmark-check-fill text-success me-2"></i>Esquema Comercial: Modalidad Renta Escalonada (1 a 1,000+ u)
+                                </h5>
+                                <div class="small text-secondary">Propuesta Oficial Syntagma · Facturación bajo Régimen Simplificado de Confianza (RESICO)</div>
+                            </div>
+                            <a href="Propuesta_Renta_Syntagma_DGT_Guanajuato.pdf" download class="btn btn-success btn-sm fw-bold">
+                                <i class="bi bi-download me-1"></i>Descargar PDF Renta (6 Págs)
+                            </a>
+                        </div>
+                        <div class="p-4">
+                            <div class="table-responsive mb-4">
+                                <table class="table table-syn mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Concepto / Tramo</th>
+                                            <th>Regla y Alcance</th>
+                                            <th class="text-end">Importe (MXN + IVA)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold text-warning">A) Implementación Inicial (Pago Único)</td>
+                                            <td class="small text-secondary">50% anticipo ($17,000 + IVA) y 50% al entregar en producción ($17,000 + IVA). Incluye servidor Cloud, alta de Razones Sociales, carga Excel inicial (~400 u), manuales PDF y capacitación (1–2 semanas).</td>
+                                            <td class="text-end mono fw-bold text-warning">$34,000.00 MXN<br><span class="small text-secondary">+ IVA</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-white">Tramo 1: Plan Base (1 a 400 u)</td>
+                                            <td class="small text-secondary">Renta mensual mínima garantizada ($48.75/u al tope). Incluye 200 GB NVMe, IA Gemini, VIN API, seguridad y soporte.</td>
+                                            <td class="text-end mono fw-bold text-success">$19,500.00 MXN<br><span class="small text-secondary">+ IVA / Mes</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-info">Tramo 2: Crecimiento (401 a 700 u)</td>
+                                            <td class="small text-secondary">+$42.00 MXN + IVA por cada unidad activa adicional arriba de 400.</td>
+                                            <td class="text-end mono fw-bold text-info">$32,100.00 MXN<br><span class="small text-secondary">al tope de 700 u</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-info">Tramo 3: Corporativo (701 a 1,000 u)</td>
+                                            <td class="small text-secondary">+$36.00 MXN + IVA por cada unidad activa adicional arriba de 700.</td>
+                                            <td class="text-end mono fw-bold text-info">$42,900.00 MXN<br><span class="small text-secondary">al tope de 1,000 u</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-light">Bloques Extra (> 1,000 u)</td>
+                                            <td class="small text-secondary">+$1,800.00 MXN + IVA por cada bloque de 50 unidades adicionales.</td>
+                                            <td class="text-end mono text-secondary">Sobre demanda</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="p-3 rounded-3 border border-info border-opacity-25" style="background: rgba(30, 58, 138, 0.18);">
+                                <h6 class="fw-bold text-info mb-2"><i class="bi bi-shield-check me-2"></i>Cláusulas de Protección Incluidas en el PDF:</h6>
+                                <ul class="small text-light mb-0 ps-3">
+                                    <li class="mb-1"><strong>Exclusión de Bajas Históricas:</strong> Solo pagan renta las unidades <em>Activas</em> o <em>En Trámite</em> en Guanajuato. Las unidades en <em>Baja por Traslado Foráneo</em> o <em>Baja por Vida Útil</em> quedan en archivo histórico sin costo mensual.</li>
+                                    <li class="mb-1"><strong>Expansión por Lote Posterior (> 50 u):</strong> Si después del arranque importan un lote adicional mayor a 50 unidades, aplica un cargo único de <strong>$50.00 MXN + IVA por unidad importada</strong> y amplía el servidor a <strong>500 GB NVMe</strong>.</li>
+                                    <li class="mb-1"><strong>Continuidad Operativa Gradual (Soft Lock):</strong> Corte el día 1 de cada mes vía SPEI. Días 1–5: aviso preventivo; Días 6–14: pausa altas nuevas e importaciones pero mantiene 100% activa la descarga de expedientes ZIP para inspecciones; Día 15+: suspensión temporal.</li>
+                                    <li><strong>Vigencia Anual de Tarifas Congeladas (12 Meses):</strong> Convenio inicial de 12 meses. Si cancelan antes del primer año, notifican con <strong>30 días naturales de anticipación</strong> y cubren <strong>1 mensualidad</strong> por cierre administrativo y entrega íntegra de su Respaldo Maestro (.SQL + Bóveda .ZIP). Después del primer año, solo aplica el aviso de 30 días sin cargo.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Calculadora Interactiva de Utilidad Libre RESICO -->
+                <div class="col-lg-5">
+                    <div class="syn-card h-100" style="border-color: rgba(16,185,129,0.4);">
+                        <div class="syn-card-header">
+                            <h5 class="mb-1 fw-bold text-success">
+                                <i class="bi bi-calculator-fill me-2"></i>Calculadora de Utilidad Libre para Ti (RESICO)
+                            </h5>
+                            <div class="small text-secondary">Simula cualquier tamaño de flota activa y revisa cuánto te queda libre después de impuestos y gastos</div>
+                        </div>
+                        <div class="p-4">
+                            <label class="form-label fw-bold text-white d-flex justify-content-between">
+                                <span>Unidades Activas en Guanajuato:</span>
+                                <span class="badge bg-success fs-6 mono" id="lblSimUnidades">400 unidades</span>
+                            </label>
+                            <input type="range" class="form-range mb-3" id="rngUnidades" min="100" max="1150" step="10" value="400" oninput="calcularSimulacionResico()">
+
+                            <div class="d-flex gap-2 flex-wrap mb-4">
+                                <button type="button" class="btn btn-xs btn-outline-light btn-sm" onclick="setUnidades(400)">400 u (Base)</button>
+                                <button type="button" class="btn btn-xs btn-outline-info btn-sm" onclick="setUnidades(550)">550 u (Tramo 2)</button>
+                                <button type="button" class="btn btn-xs btn-outline-info btn-sm" onclick="setUnidades(700)">700 u (Tope T2)</button>
+                                <button type="button" class="btn btn-xs btn-outline-warning btn-sm" onclick="setUnidades(850)">850 u (Tramo 3)</button>
+                                <button type="button" class="btn btn-xs btn-outline-success btn-sm" onclick="setUnidades(1000)">1,000 u (Tope T3)</button>
+                            </div>
+
+                            <div class="p-3 rounded-3 mb-3" style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--syn-border);">
+                                <div class="small text-info fw-bold text-uppercase mb-2">1. Factura Mensual al Cliente (Persona Moral)</div>
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-secondary">Subtotal Renta Mensual:</span>
+                                    <strong class="mono text-white" id="simSubtotal">$19,500.00 MXN</strong>
+                                </div>
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-secondary">+ IVA Trasladado (16%):</span>
+                                    <span class="mono text-secondary" id="simIva">+$3,120.00 MXN</span>
+                                </div>
+                                <div class="d-flex justify-content-between small mb-2 pb-2 border-bottom border-secondary">
+                                    <span class="text-warning">- Retención ISR RESICO (1.25%):</span>
+                                    <span class="mono text-warning" id="simRetIsr">-$243.75 MXN</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold text-white small">Total Neto que te depositan vía SPEI:</span>
+                                    <span class="mono fw-bold text-info fs-6" id="simNetoSpei">$22,376.25 MXN</span>
+                                </div>
+                            </div>
+
+                            <div class="p-3 rounded-3" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.35);">
+                                <div class="small text-success fw-bold text-uppercase mb-2">2. Tu Utilidad Neta Libre en el Bolsillo</div>
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-secondary">Ingreso Bruto (Sin IVA, ya que el IVA es del SAT):</span>
+                                    <span class="mono text-white" id="simIngresoSinIva">$19,500.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-secondary">- Impuesto ISR RESICO (1.25% ya retenido):</span>
+                                    <span class="mono text-warning" id="simIsrPagado">-$243.75</span>
+                                </div>
+                                <div class="d-flex justify-content-between small mb-2 pb-2 border-bottom border-secondary">
+                                    <span class="text-secondary">- Costos Operativos (Hostinger Business + Dominio + API Gemini):</span>
+                                    <span class="mono text-danger" id="simCostosOp">-$390.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold text-white">GANANCIA LIBRE MENSUAL:</span>
+                                    <span class="mono fw-bold text-success fs-4" id="simUtilidadLibre">$18,866.25 MXN</span>
+                                </div>
+                                <div class="text-end small text-secondary mt-1" id="simAnualLibre">
+                                    Equivalente a <strong>$226,395.00 MXN libres al año</strong> (+ $33,575 libres de la implementación)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visor Embebido del PDF de Renta -->
+            <div class="syn-card">
+                <div class="syn-card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold text-white"><i class="bi bi-eye-fill text-info me-2"></i>Vista Previa en Línea: Propuesta Técnico-Comercial Syntagma (Modalidad Renta · 6 Páginas)</h6>
+                    <a href="Propuesta_Renta_Syntagma_DGT_Guanajuato.pdf" target="_blank" class="btn btn-outline-light btn-sm">Abrir en Pantalla Completa</a>
+                </div>
+                <div class="p-3">
+                    <iframe src="Propuesta_Renta_Syntagma_DGT_Guanajuato.pdf" class="pdf-viewer-frame" title="Propuesta Renta Syntagma"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================= -->
+        <!-- PESTAÑA 3: COTIZACIÓN VENTA DEFINITIVA + PÓLIZA ANUAL                   -->
+        <!-- ======================================================================= -->
+        <div class="tab-pane fade" id="tabCotizacionVenta">
+            <div class="syn-card mb-4">
+                <div class="syn-card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h5 class="mb-1 fw-bold text-white">
+                            <i class="bi bi-building-check text-warning me-2"></i>Esquema Comercial: Modalidad Venta Definitiva (Llave en Mano)
+                        </h5>
+                        <div class="small text-secondary">Tope máximo con 2 meses de soporte gratuito incluidos + Póliza Anual opcional</div>
+                    </div>
+                    <a href="Propuesta_Venta_Definitiva_Syntagma_DGT_Guanajuato.pdf" download class="btn btn-warning text-dark btn-sm fw-bold">
+                        <i class="bi bi-download me-1"></i>Descargar PDF Venta Definitiva
+                    </a>
+                </div>
+                <div class="p-4">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="module-box">
+                                <div class="small text-warning fw-bold text-uppercase mb-1">A) Venta Definitiva (Llave en Mano)</div>
+                                <div class="h3 fw-bold text-white mb-2">$280,000.00 <span class="fs-6 text-secondary">+ IVA</span></div>
+                                <p class="small text-secondary mb-0">
+                                    Esquema de pagos: <strong>40% anticipo ($112,000 + IVA)</strong>, <strong>30% avance intermedio ($84,000 + IVA)</strong> y <strong>30% contra entrega final ($84,000 + IVA)</strong>. En RESICO te quedan libres <strong>$276,500.00 MXN</strong> después del 1.25% de ISR.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="module-box">
+                                <div class="small text-success fw-bold text-uppercase mb-1">B) Garantía Post-Entrega Incluida</div>
+                                <div class="h3 fw-bold text-success mb-2">2 Meses Gratis</div>
+                                <p class="small text-secondary mb-0">
+                                    Durante los primeros 60 días posteriores a la entrega en producción, el cliente cuenta con acompañamiento operativo, soporte directo y estabilización sin costo adicional.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="module-box">
+                                <div class="small text-info fw-bold text-uppercase mb-1">C) Póliza Anual Opcional (Mes 3+)</div>
+                                <div class="h3 fw-bold text-info mb-2">$7,000.00 <span class="fs-6 text-secondary">+ IVA/mes</span></div>
+                                <p class="small text-secondary mb-0">
+                                    Al concluir los 2 meses gratuitos, el cliente puede contratar la póliza anual que cubre mantenimiento preventivo de BD, respaldos, monitoreo WAF y actualizaciones normativas DGT.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visor Embebido del PDF de Venta -->
+            <div class="syn-card">
+                <div class="syn-card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold text-white"><i class="bi bi-eye-fill text-warning me-2"></i>Vista Previa en Línea: Propuesta Técnico-Comercial Syntagma (Modalidad Venta Definitiva)</h6>
+                    <a href="Propuesta_Venta_Definitiva_Syntagma_DGT_Guanajuato.pdf" target="_blank" class="btn btn-outline-light btn-sm">Abrir en Pantalla Completa</a>
+                </div>
+                <div class="p-3">
+                    <iframe src="Propuesta_Venta_Definitiva_Syntagma_DGT_Guanajuato.pdf" class="pdf-viewer-frame" title="Propuesta Venta Syntagma"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================= -->
+        <!-- PESTAÑA 4: ARQUITECTURA DE BASE DE DATOS, HOSTINGER Y MANUALES PDF      -->
+        <!-- ======================================================================= -->
+        <div class="tab-pane fade" id="tabArquitecturaManuales">
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="syn-card h-100">
+                        <div class="syn-card-header">
+                            <h5 class="mb-1 fw-bold text-white"><i class="bi bi-diagram-3-fill text-info me-2"></i>Arquitectura Relacional MySQL (16 Tablas del Sistema)</h5>
+                            <div class="small text-secondary">100% compatible con tu Plan Business de Hostinger (PHP 8.2/8.3 + MySQL 8 + Cron Jobs + SSL)</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="table-responsive">
+                                <table class="table table-syn table-sm mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Tabla MySQL</th>
+                                            <th>Propósito dentro del Ecosistema DGT Guanajuato</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="small">
+                                        <tr><td class="mono text-warning">1. users</td><td>Accesos blindados por <code>user_login</code> (perfiles <code>admin</code> y <code>captura</code>).</td></tr>
+                                        <tr><td class="mono text-warning">2. system_settings</td><td>Llaves de Gemini API, reCAPTCHA v3 y destinatarios de correo DGT.</td></tr>
+                                        <tr><td class="mono text-warning">3. security_audit_log</td><td>Bitácora SIEM de inicios de sesión, descargas ZIP y acciones críticas.</td></tr>
+                                        <tr><td class="mono text-warning">4. security_rate_limits</td><td>Protección anti-fuerza bruta y WAF por dirección IP.</td></tr>
+                                        <tr><td class="mono text-info">5. razones_sociales</td><td>Catálogo de empresas del corporativo (RFC, Representante, Escritura, RPP).</td></tr>
+                                        <tr><td class="mono text-info">6. razon_social_documentos</td><td>Bóveda única de los 6 documentos legales compartidos por Razón Social.</td></tr>
+                                        <tr><td class="mono text-success">7. unidades</td><td>Padrón vehicular con <code>numero_economico</code> (<code>PLE-0150-P</code>), <code>oficina_regional_dgt</code>, <code>consecutivo_dgt</code>, modalidad (<code>PERSONAL</code>, <code>ESCOLAR</code>, <code>ACCESORIO</code>), VIN, motor y estatus.</td></tr>
+                                        <tr><td class="mono text-success">8. unidad_documentos</td><td>Los 7 documentos técnicos reglamentarios de cada vehículo y sus vigencias.</td></tr>
+                                        <tr><td class="mono text-success">9. permisos_dgt</td><td>Control de folios de permisos vigentes, por vencer, vencidos o vacantes.</td></tr>
+                                        <tr><td class="mono text-success">10. movimientos_reemplazo_dgt</td><td>Trazabilidad histórica cuando una unidad sale a otro estado o vence por vida útil.</td></tr>
+                                        <tr><td class="mono text-light">11. polizas_seguro</td><td>Pólizas maestras de flotilla, individuales y cartas cobertura provisionales.</td></tr>
+                                        <tr><td class="mono text-light">12. choferes</td><td>Operadores asignados por unidad, licencia estatal tipo B y tarjetón DGT.</td></tr>
+                                        <tr><td class="mono text-light">13. dgt_email_logs</td><td>Historial auditable de reportes Excel enviados en 1 clic a la DGT.</td></tr>
+                                        <tr><td class="mono text-info fw-bold">14. clientes_servicio</td><td>Catálogo de Plantas Industriales contratantes (Mazda, GM, Pirelli, etc.).</td></tr>
+                                        <tr><td class="mono text-info fw-bold">15. unidad_cliente_asignacion</td><td>Relación N:M de qué unidades cubren ruta o turno en cada planta industrial.</td></tr>
+                                        <tr><td class="mono text-warning fw-bold">16. configuracion_suscripcion & cortes_mensuales</td><td>Motor nativo de conteo activo, cálculo escalonado (1–1,000+ u), SPEI y CFDI.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="syn-card h-100">
+                        <div class="syn-card-header">
+                            <h5 class="mb-1 fw-bold text-warning"><i class="bi bi-journal-bookmark-fill me-2"></i>Documentación y Manuales Oficiales PDF</h5>
+                            <div class="small text-secondary">Listos para consultar o descargar desde cualquier computadora</div>
+                        </div>
+                        <div class="p-4 d-grid gap-3">
+                            <a href="Propuesta_Renta_Syntagma_DGT_Guanajuato.pdf" target="_blank" class="btn btn-outline-success text-start p-3 rounded-3">
+                                <div class="fw-bold"><i class="bi bi-file-earmark-pdf-fill me-2"></i>1. Propuesta Técnico-Comercial RENTA (1 a 1,000 Unidades)</div>
+                                <div class="small text-secondary mt-1">6 páginas · Implementación $34,000 + IVA · Plan Base $19,500 + IVA/mes · Cláusula 12 meses / 30 días / 1 mensualidad.</div>
+                            </a>
+                            <a href="Propuesta_Venta_Definitiva_Syntagma_DGT_Guanajuato.pdf" target="_blank" class="btn btn-outline-warning text-start p-3 rounded-3">
+                                <div class="fw-bold"><i class="bi bi-file-earmark-pdf-fill me-2"></i>2. Propuesta Técnico-Comercial VENTA Definitiva (Llave en Mano)</div>
+                                <div class="small text-secondary mt-1">$280,000 + IVA · Incluye 2 meses de soporte gratuito + Póliza Anual opcional ($7,000 + IVA/mes).</div>
+                            </a>
+                            <a href="Manual_Usuario_Operativo_Perfil_Captura_Syntagma.pdf" target="_blank" class="btn btn-outline-info text-start p-3 rounded-3">
+                                <div class="fw-bold"><i class="bi bi-book-half me-2"></i>3. Manual de Usuario Operativo (Perfil Captura)</div>
+                                <div class="small text-secondary mt-1">Guía paso a paso para altas con VIN/OCR, constructor DGT, pólizas/incisos, plantas y expedientes ZIP.</div>
+                            </a>
+                            <a href="Manual_Administracion_y_Configuracion_Perfil_Admin_Syntagma.pdf" target="_blank" class="btn btn-outline-light text-start p-3 rounded-3">
+                                <div class="fw-bold"><i class="bi bi-shield-lock-fill me-2"></i>4. Manual de Administración y Control (Perfil Administrador)</div>
+                                <div class="small text-secondary mt-1">Guía ejecutiva de Razones Sociales, auditorías por Planta Industrial, cortes SPEI y Respaldos Maestros.</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer class="container py-4 mt-4 border-top border-secondary border-opacity-25 text-center small text-secondary">
+    Syntagma · Soluciones de Software Empresarial · Líder de Proyecto: José Alejandro Márquez Aviña · Memoria Ejecutiva de Consulta (Sin Código Fuente)
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function fmtMoney(n) {
+    return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function setUnidades(u) {
+    document.getElementById('rngUnidades').value = u;
+    calcularSimulacionResico();
+}
+
+function calcularSimulacionResico() {
+    const u = parseInt(document.getElementById('rngUnidades').value, 10) || 400;
+    document.getElementById('lblSimUnidades').textContent = u.toLocaleString('es-MX') + ' unidades';
+
+    let subtotal = 19500.00;
+    if (u <= 400) {
+        subtotal = 19500.00;
+    } else if (u <= 700) {
+        subtotal = 19500.00 + ((u - 400) * 42.00);
+    } else if (u <= 1000) {
+        subtotal = 19500.00 + (300 * 42.00) + ((u - 700) * 36.00);
+    } else {
+        const bloques = Math.ceil((u - 1000) / 50);
+        subtotal = 42900.00 + (bloques * 1800.00);
+    }
+
+    const iva = subtotal * 0.16;
+    const retIsr = subtotal * 0.0125;
+    const netoSpei = subtotal + iva - retIsr;
+
+    // Costos operativos estimados en Hostinger Business + Dominio + API Gemini
+    const costosOp = u <= 500 ? 390.00 : 520.00;
+    const utilidadLibre = subtotal - retIsr - costosOp;
+    const anualLibre = utilidadLibre * 12;
+
+    document.getElementById('simSubtotal').textContent = fmtMoney(subtotal) + ' MXN';
+    document.getElementById('simIva').textContent = '+' + fmtMoney(iva) + ' MXN';
+    document.getElementById('simRetIsr').textContent = '-' + fmtMoney(retIsr) + ' MXN';
+    document.getElementById('simNetoSpei').textContent = fmtMoney(netoSpei) + ' MXN';
+
+    document.getElementById('simIngresoSinIva').textContent = fmtMoney(subtotal);
+    document.getElementById('simIsrPagado').textContent = '-' + fmtMoney(retIsr);
+    document.getElementById('simCostosOp').textContent = '-' + fmtMoney(costosOp);
+    document.getElementById('simUtilidadLibre').textContent = fmtMoney(utilidadLibre) + ' MXN';
+    document.getElementById('simAnualLibre').innerHTML =
+        'Equivalente a <strong>' + fmtMoney(anualLibre) + ' MXN libres al año</strong> (+ $33,575 libres de la implementación)';
+}
+</script>
+</body>
+</html>
